@@ -124,13 +124,36 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  // lib/features/auth/data/repositories/auth_repository_impl.dart
   @override
   Future<void> signOut() async {
     try {
+      print('Starting sign out process...');
+
+      // Sign out from Google
+      try {
+        await _googleSignIn.signOut();
+        print('Google sign out successful');
+      } catch (e) {
+        print('Google sign out failed (but continuing): $e');
+      }
+
+      // Sign out from Facebook (now should work with proper configuration)
+      try {
+        await _facebookAuth.logOut();
+        print('Facebook sign out successful');
+      } catch (e) {
+        print('Facebook sign out failed (but continuing): $e');
+        // Continue with other sign-out operations
+      }
+
+      // Most important: Sign out from Firebase
       await _firebaseAuth.signOut();
-      await _googleSignIn.signOut();
-      await _facebookAuth.logOut();
+      print('Firebase sign out successful');
+
+      print('All sign out operations completed');
     } catch (e) {
+      print('Sign out failed: $e');
       throw Exception('Sign out failed: $e');
     }
   }

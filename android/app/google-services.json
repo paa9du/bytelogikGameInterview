@@ -12,7 +12,20 @@
           "package_name": "com.example.bytelogikgameinterview"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "348046556049-uma1fakhj8db8fvl69hgtvii3e627ln8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bytelogikgameinterview",
+            "certificate_hash": "d413912686d981ad5eeef94984b1676de53dc7d6"
+          }
+        },
+        {
+          "client_id": "348046556049-upj1p6ks930649c08k4pvfe3rftqrn23.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCceHa6bvlpCvqy7cN0RiBGGmTZ8mZs_6k"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348046556049-upj1p6ks930649c08k4pvfe3rftqrn23.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "348046556049-mf6ep3r811188mkddpglg95tgh5tg1jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bytelogikgameinterview"
+              }
+            }
+          ]
         }
       }
     }

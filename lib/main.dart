@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Multiplayer Tic-Tac-Toe',
       theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: const AuthWrapper(),

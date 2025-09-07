@@ -39,11 +39,35 @@ class LeaderboardViewModel extends StateNotifier<LeaderboardState> {
   Future<void> loadLeaderboard() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      // Implementation would load leaderboard data
-      await Future.delayed(const Duration(seconds: 1));
-      state = state.copyWith(isLoading: false, players: []);
+      final players = await _repository.getAllPlayers();
+      state = state.copyWith(isLoading: false, players: players);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> refreshLeaderboard() async {
+    await loadLeaderboard();
+  }
+
+  Future<void> updateUserStatsAfterGame({
+    required String userId,
+    required bool isWin,
+    required bool isDraw,
+  }) async {
+    try {
+      if (isDraw) {
+        await _repository.incrementDraw(userId);
+      } else if (isWin) {
+        await _repository.incrementWin(userId);
+      } else {
+        await _repository.incrementLoss(userId);
+      }
+
+      // Refresh the leaderboard to show updated stats
+      await loadLeaderboard();
+    } catch (e) {
+      print('Error updating user stats: $e');
     }
   }
 }

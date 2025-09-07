@@ -7,8 +7,8 @@ class UserModel {
   final int wins;
   final int losses;
   final int draws;
-  final int totalGames;
 
+  int get totalGames => wins + losses + draws;
   UserModel({
     required this.id,
     required this.email,
@@ -17,7 +17,7 @@ class UserModel {
     this.wins = 0,
     this.losses = 0,
     this.draws = 0,
-    this.totalGames = 0,
+    // this.totalGames = 0,
   });
 
   // Convert to JSON
@@ -30,7 +30,7 @@ class UserModel {
       'wins': wins,
       'losses': losses,
       'draws': draws,
-      'totalGames': totalGames,
+      // 'totalGames': totalGames,
     };
   }
 
@@ -44,7 +44,7 @@ class UserModel {
       wins: json['wins'] ?? 0,
       losses: json['losses'] ?? 0,
       draws: json['draws'] ?? 0,
-      totalGames: json['totalGames'] ?? 0,
+      // totalGames: json['totalGames'] ?? 0,
     );
   }
 
@@ -67,7 +67,7 @@ class UserModel {
       wins: wins ?? this.wins,
       losses: losses ?? this.losses,
       draws: draws ?? this.draws,
-      totalGames: totalGames ?? this.totalGames,
+      // totalGames: totalGames ?? this.totalGames,
     );
   }
 

@@ -24,9 +24,8 @@ android {
 
     defaultConfig {
         // Add this manifest placeholder for Facebook
-        manifestPlaceholders = [
-            'appAuthRedirectScheme': 'fb1331367978484815' // Your Facebook App ID prefixed with 'fb'
-        ]
+        // CORRECT Kotlin DSL syntax for manifest placeholders
+        manifestPlaceholders["appAuthRedirectScheme"] = "fb1331367978484815"
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.bytelogikgameinterview"
         // You can update the following values to match your application needs.
@@ -46,6 +45,10 @@ android {
     }
 }
 
+dependencies {
+    implementation("com.facebook.android:facebook-login:16.3.0")
+    // ... other dependencies
+}
 flutter {
     source = "../.."
 }

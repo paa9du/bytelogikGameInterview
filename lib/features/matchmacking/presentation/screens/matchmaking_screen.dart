@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../viewmodels/matchmaking_viewmodel.dart';
 
-
 class MatchmakingScreen extends ConsumerStatefulWidget {
   const MatchmakingScreen({super.key});
 
@@ -48,8 +47,8 @@ class _MatchmakingScreenState extends ConsumerState<MatchmakingScreen> {
                 onPressed: matchmakingState.isLoading
                     ? null
                     : () => ref
-                    .read(matchmakingViewModelProvider.notifier)
-                    .findQuickGame(),
+                          .read(matchmakingViewModelProvider.notifier)
+                          .findQuickGame(),
                 child: matchmakingState.isLoading
                     ? const CircularProgressIndicator()
                     : const Text('Quick Play', style: TextStyle(fontSize: 18)),
@@ -62,33 +61,29 @@ class _MatchmakingScreenState extends ConsumerState<MatchmakingScreen> {
             // Available Games List
             Expanded(
               child: matchmakingState.availableGames.isEmpty
-                  ? const Center(
-                child: Text('No available games found'),
-              )
+                  ? const Center(child: Text('No available games found'))
                   : ListView.builder(
-                itemCount: matchmakingState.availableGames.length,
-                itemBuilder: (context, index) {
-                  final game = matchmakingState.availableGames[index];
-                  return Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.gamepad),
-                      title: Text('Game by ${game.player1.email}'),
-                      subtitle: Text(
-                        'Waiting for opponent...',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      trailing: ElevatedButton(
-                        onPressed: () => ref
-                            .read(matchmakingViewModelProvider.notifier)
-                            .joinGame(game.id),
-                        child: const Text('Join'),
-                      ),
+                      itemCount: matchmakingState.availableGames.length,
+                      itemBuilder: (context, index) {
+                        final game = matchmakingState.availableGames[index];
+                        return Card(
+                          child: ListTile(
+                            leading: const Icon(Icons.gamepad),
+                            title: Text('Game by ${game.player1.email}'),
+                            subtitle: Text(
+                              'Waiting for opponent...',
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                            trailing: ElevatedButton(
+                              onPressed: () => ref
+                                  .read(matchmakingViewModelProvider.notifier)
+                                  .joinGame(game.id),
+                              child: const Text('Join'),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
 
             // Status Indicators
@@ -102,9 +97,7 @@ class _MatchmakingScreenState extends ConsumerState<MatchmakingScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   matchmakingState.error!,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               ),
           ],

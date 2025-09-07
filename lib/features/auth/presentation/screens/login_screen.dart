@@ -1,4 +1,5 @@
 // lib/features/auth/presentation/screens/login_screen.dart
+import 'package:bytelogikgameinterview/features/auth/presentation/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../viewmodels/auth_viewmodel.dart';
@@ -119,20 +120,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       const SizedBox(height: 10),
 
                       // Sign Up Button
+                      // In your LoginScreen, update the Sign Up button:
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
                           onPressed: authState.isLoading
                               ? null
-                              : () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    await ref
-                                        .read(authViewModelProvider.notifier)
-                                        .signUpWithEmail(
-                                          _emailController.text,
-                                          _passwordController.text,
-                                        );
-                                  }
+                              : () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignUpScreen(),
+                                    ),
+                                  );
                                 },
                           child: const Text('Create Account'),
                         ),
@@ -141,11 +142,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
 
+                // lib/features/auth/presentation/screens/login_screen.dart
+                // DELETE the entire social login buttons section:
+
+                // REMOVE THIS WHOLE SECTION:
                 const SizedBox(height: 30),
                 const Text('Or continue with'),
                 const SizedBox(height: 20),
 
-                // Social Sign In Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -156,7 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ? null
                           : () => ref
                                 .read(authViewModelProvider.notifier)
-                                .signInWithGoogle(),
+                                .signInWithGoogle(), // THIS METHOD NO LONGER EXISTS
                     ),
                     const SizedBox(width: 16),
                     AuthButton(
@@ -166,7 +170,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ? null
                           : () => ref
                                 .read(authViewModelProvider.notifier)
-                                .signInWithFacebook(),
+                                .signInWithFacebook(), // THIS METHOD NO LONGER EXISTS
                     ),
                   ],
                 ),
