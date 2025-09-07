@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "348046556049",
+    "project_id": "bytelogikgame",
+    "storage_bucket": "bytelogikgame.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348046556049:android:acbe621180b6bb2a057830",
+        "android_client_info": {
+          "package_name": "com.example.bytelogikgameinterview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCceHa6bvlpCvqy7cN0RiBGGmTZ8mZs_6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
