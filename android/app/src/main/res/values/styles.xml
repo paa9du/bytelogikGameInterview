@@ -3,22 +3,29 @@
     <string name="app_name">bytelogikgameinterview</string>
 
     <!-- Facebook Configuration -->
+    <!-- Developer App Configuration (commented out) -->
+    <!--
     <string name="facebook_app_id">1331367978484815</string>
     <string name="fb_login_protocol_scheme">fb1331367978484815</string>
+    <string name="facebook_client_token">33b1213760a365b6bfd0fc1adc9f9d9e</string>
+    -->
 
-    <!-- You NEED to get this from Facebook Developer Console -->
-    <string name="facebook_client_token">YOUR_CLIENT_TOKEN_HERE</string>
+    <!-- Tester / New App Configuration -->
+    <string name="facebook_app_id">792724243300416</string>
+    <string name="fb_login_protocol_scheme">fb792724243300416</string>
+    <string name="facebook_client_token">c669dae503d5ccc9a89d85a19ba1c86c</string>
+
     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when
              the Flutter engine draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
+
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
          Flutter UI initializes, as well as behind your Flutter UI while its
          running.
-
          This Theme is only used starting with V2 of Flutter's Android embedding. -->
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>

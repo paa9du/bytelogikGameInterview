@@ -1,9 +1,11 @@
 // lib/features/auth/presentation/viewmodels/auth_viewmodel.dart
 import 'dart:async';
 
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>((
@@ -74,15 +76,125 @@ class AuthViewModel extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> signInWithFacebook() async {
-    state = state.copyWith(isLoading: true, error: null);
+  // Future<void> signInWithFacebook() async {
+  //   state = state.copyWith(isLoading: true, error: null);
+  //   try {
+  //     await _repository.signInWithFacebook();
+  //   } catch (e) {
+  //     state = state.copyWith(isLoading: false, error: e.toString());
+  //     rethrow;
+  //   } finally {
+  //     state = state.copyWith(isLoading: false);
+  //   }
+  // }
+  // Future<void> signInWithFacebook() async {
+  //   state = state.copyWith(isLoading: true, error: null);
+  //   try {
+  //     final result = await _repository.signInWithFacebook();
+  //     // Update state with the new user only
+  //     state = state.copyWith(user: result); // <-- isAuthenticated is computed
+  //   } catch (e) {
+  //     state = state.copyWith(error: e.toString());
+  //     rethrow;
+  //   } finally {
+  //     state = state.copyWith(isLoading: false);
+  //   }
+  // }
+  // Future<User?> signInWithFacebook() async {
+  //   final LoginResult loginResult = await FacebookAuth.instance.login(
+  //     permissions: ['public_profile', 'email'],
+  //   );
+  //
+  //   if (loginResult.status == LoginStatus.success) {
+  //     final userData = await FacebookAuth.instance.getUserData();
+  //
+  //     final email = userData['email'] as String?;
+  //     final name = userData['name'] as String?;
+  //     final id = userData['id'] as String?;
+  //
+  //     // Use Firebase Auth with Facebook credential
+  //     final facebookAuthCredential = FacebookAuthProvider.credential(
+  //       loginResult.accessToken!.tokenString,
+  //     );
+  //
+  //     final userCredential = await FirebaseAuth.instance.signInWithCredential(
+  //       facebookAuthCredential,
+  //     );
+  //
+  //     // Optionally update Firestore with fallback values
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(userCredential.user!.uid)
+  //         .set({
+  //           'email': email ?? '${id}@facebook.com', // fallback if null
+  //           'displayName': name ?? 'Facebook User',
+  //           'createdAt': FieldValue.serverTimestamp(),
+  //         }, SetOptions(merge: true));
+  //
+  //     return userCredential.user;
+  //   } else {
+  //     throw Exception(
+  //       'Facebook sign in failed: ${loginResult.status} - ${loginResult.message}',
+  //     );
+  //   }
+  // }
+  Future<User?> signInWithFacebook() async {
     try {
-      await _repository.signInWithFacebook();
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      final loginResult = await FacebookAuth.instance.login(
+        permissions: ['public_profile', 'email'],
+      );
+
+      if (loginResult.status == LoginStatus.success) {
+        final facebookAuthCredential = FacebookAuthProvider.credential(
+          loginResult.accessToken!.tokenString,
+        );
+
+        // Attempt to sign in with the Facebook credential
+        return (await FirebaseAuth.instance.signInWithCredential(
+          facebookAuthCredential,
+        )).user;
+      } else {
+        throw Exception('Facebook sign in failed: ${loginResult.status}');
+      }
+    } on FirebaseAuthException catch (e) {
+      // Check for the specific error when an account exists with a different provider
+      if (e.code == 'account-exists-with-different-credential') {
+        final pendingCred = e.credential;
+        final email = e.email;
+
+        // In a provider-first flow, you would not know the old provider.
+        // For this example, we assume the only other provider is Google.
+        // You would need to handle this with a clear UI flow in a real app.
+        print(
+          'An account with the email $email already exists. Please sign in with Google first.',
+        );
+
+        try {
+          // Sign the user in with the existing Google account
+          final googleUser = await GoogleSignIn().signIn();
+          final googleAuth = await googleUser!.authentication;
+          final googleCred = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+
+          final userCredential = await FirebaseAuth.instance
+              .signInWithCredential(googleCred);
+
+          // Link the pending Facebook credential to the existing Google account
+          await userCredential.user!.linkWithCredential(pendingCred!);
+          return userCredential.user;
+        } on Exception catch (innerException) {
+          // Handle potential errors during the linking process
+          print('Error during account linking: $innerException');
+          rethrow;
+        }
+      } else {
+        // Re-throw any other FirebaseAuthException
+        rethrow;
+      }
+    } on Exception {
       rethrow;
-    } finally {
-      state = state.copyWith(isLoading: false);
     }
   }
 

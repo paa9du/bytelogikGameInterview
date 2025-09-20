@@ -163,14 +163,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 .signInWithGoogle(), // THIS METHOD NO LONGER EXISTS
                     ),
                     const SizedBox(width: 16),
+                    // AuthButton(
+                    //   icon: Icons.facebook,
+                    //   text: 'Facebook',
+                    //   onPressed: authState.isLoading
+                    //       ? null
+                    //       : () => ref
+                    //             .read(authViewModelProvider.notifier)
+                    //             .signInWithFacebook(), // THIS METHOD NO LONGER EXISTS
+                    // ),
                     AuthButton(
                       icon: Icons.facebook,
                       text: 'Facebook',
                       onPressed: authState.isLoading
                           ? null
-                          : () => ref
-                                .read(authViewModelProvider.notifier)
-                                .signInWithFacebook(), // THIS METHOD NO LONGER EXISTS
+                          : () async {
+                              // Call the notifier method instead of directly using 'state'
+                              await ref
+                                  .read(authViewModelProvider.notifier)
+                                  .signInWithFacebook();
+                            },
                     ),
                   ],
                 ),
