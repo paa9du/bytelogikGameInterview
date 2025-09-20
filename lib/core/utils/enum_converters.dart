@@ -1,4 +1,3 @@
-// lib/core/utils/enum_converters.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../models/game_model.dart';
 
